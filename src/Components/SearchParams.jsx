@@ -5,6 +5,7 @@ import fetchSearch from "../Fetches/fetchSearch";
 
 // import { Animal } from "./types";
 import useBreedList from "../useBreedList";
+import Paginate from "./Paginate";
 import Results from "./Results";
 const ANIMALS = ["bird", "cat", "dog", "rabbit", "reptile"];
 
@@ -47,7 +48,6 @@ const SearchParams = () => {
   const results = useQuery(["search", requestParams], fetchSearch);
   const pets = results?.data?.pets ?? [];
   const hasNext = results?.data?.hasNext ?? false;
-  console.log(hasNext);
 
   return (
     <div className="search-params">
@@ -93,18 +93,11 @@ const SearchParams = () => {
         <button>Submit</button>
       </form>
       <Results pets={pets} />
-      <div>
-        {requestParams.page > 0 && (
-          <button onClick={() => handleNav(requestParams.page - 1)}>
-            Previous Page
-          </button>
-        )}
-        {hasNext && (
-          <button onClick={() => handleNav(requestParams.page + 1)}>
-            Next Page
-          </button>
-        )}
-      </div>
+      <Paginate
+        page={requestParams.page}
+        next={hasNext}
+        handleNav={handleNav}
+      />
     </div>
   );
 };
