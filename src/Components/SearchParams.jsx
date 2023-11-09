@@ -13,32 +13,45 @@ const SearchParams = () => {
     animal: "",
     location: "",
     breed: "",
+    page: 0,
   });
   const [animal, setAnimal] = useState("");
   // Equivalent to:
   // const animalHook = useState("");
   // const animal = animalHook[0];
   // const setLocation = animalHook[1];
+
   const [breeds] = useBreedList(animal);
   const [adoptedPet, _] = useContext(AdoptedPetContext); // eslint-disable-line no-unused-vars
 
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const obj = {
+      animal: formData.get("animal") ?? "",
+      location: formData.get("location") ?? "",
+      breed: formData.get("breed") ?? "",
+      page: 0,
+    };
+    setRequestParams(obj);
+  };
+
+  const handleAnimalChange = (e) => {
+    setAnimal(e.target.value);
+  };
+
+  const handleNav = (newPage) => {
+    setRequestParams({ ...requestParams, page: newPage });
+  };
+
   const results = useQuery(["search", requestParams], fetchSearch);
   const pets = results?.data?.pets ?? [];
+  const hasNext = results?.data?.hasNext ?? false;
+  console.log(hasNext);
 
   return (
     <div className="search-params">
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          const formData = new FormData(e.target);
-          const obj = {
-            animal: formData.get("animal") ?? "",
-            location: formData.get("location") ?? "",
-            breed: formData.get("breed") ?? "",
-          };
-          setRequestParams(obj);
-        }}
-      >
+      <form onSubmit={handleFormSubmit}>
         {adoptedPet ? (
           <div className="pet image-container">
             <img src={adoptedPet.images[0]} alt={adoptedPet.name} />
@@ -55,9 +68,7 @@ const SearchParams = () => {
             value={animal}
             name="animal"
             placeholder="Animal"
-            onChange={(e) => {
-              setAnimal(e.target.value);
-            }}
+            onChange={handleAnimalChange}
           >
             <option />
             {ANIMALS.map((animal) => (
@@ -82,6 +93,18 @@ const SearchParams = () => {
         <button>Submit</button>
       </form>
       <Results pets={pets} />
+      <div>
+        {requestParams.page > 0 && (
+          <button onClick={() => handleNav(requestParams.page - 1)}>
+            Previous Page
+          </button>
+        )}
+        {hasNext && (
+          <button onClick={() => handleNav(requestParams.page + 1)}>
+            Next Page
+          </button>
+        )}
+      </div>
     </div>
   );
 };
