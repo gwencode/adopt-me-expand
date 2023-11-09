@@ -48,6 +48,7 @@ const SearchParams = () => {
   const results = useQuery(["search", requestParams], fetchSearch);
   const pets = results?.data?.pets ?? [];
   const hasNext = results?.data?.hasNext ?? false;
+  const pages = Math.ceil(results?.data?.numberOfResults / 10) ?? 1;
 
   return (
     <div className="search-params">
@@ -96,6 +97,7 @@ const SearchParams = () => {
       <Paginate
         page={requestParams.page}
         next={hasNext}
+        pages={pages}
         handleNav={handleNav}
       />
     </div>

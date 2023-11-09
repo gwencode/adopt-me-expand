@@ -1,12 +1,13 @@
-const Paginate = ({ page, next, handleNav }) => {
+const Paginate = ({ page, next, pages, handleNav }) => {
   return (
     <div className="paginate">
-      <div>
-        {page > 0 && (
-          <button onClick={() => handleNav(page - 1)}>Previous Page</button>
-        )}
-        {next && <button onClick={() => handleNav(page + 1)}>Next Page</button>}
-      </div>
+      {page > 0 && (
+        <button onClick={() => handleNav(page - 1)}>Previous Page</button>
+      )}
+      <span>
+        Page {page + 1}/{pages}
+      </span>
+      {next && <button onClick={() => handleNav(page + 1)}>Next Page</button>}
     </div>
   );
 };
