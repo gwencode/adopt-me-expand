@@ -18,8 +18,8 @@ const Details = () => {
 
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
-  const [_, setAdoptedPet] = useContext(AdoptedPetContext); // eslint-disable-line no-unused-vars
-  const results = useQuery(["details", id], fetchPet);
+  const [_, setAdoptedPet] = useContext(AdoptedPetContext); // eslint-disable-line @typescript-eslint/no-unused-vars
+  const results = useQuery<PetAPIResponse>(["details", id], fetchPet);
 
   if (results.isLoading) {
     return (
@@ -29,7 +29,11 @@ const Details = () => {
     );
   }
 
-  const pet = results.data.pets[0];
+  const pet = results?.data?.pets[0];
+
+  if (!pet) {
+    throw new Error("No pet found");
+  }
 
   return (
     <div>
