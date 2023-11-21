@@ -7,12 +7,18 @@ import Carousel from "./Carousel";
 import fetchPet from "../Fetches/fetchPet";
 import Modal from "./Modal";
 import Navbar from "./Navbar";
+import { PetAPIResponse } from "../APIResponsesTypes";
 
 const Details = () => {
+  const { id } = useParams();
+
+  if (!id) {
+    throw new Error("ID required");
+  }
+
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
   const [_, setAdoptedPet] = useContext(AdoptedPetContext); // eslint-disable-line no-unused-vars
-  const { id } = useParams();
   const results = useQuery(["details", id], fetchPet);
 
   if (results.isLoading) {
