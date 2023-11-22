@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, FormEvent } from "react";
 import { useQuery } from "@tanstack/react-query";
 import AdoptedPetContext from "../AdoptedPetContext";
 import fetchSearch from "../Fetches/fetchSearch";
@@ -8,16 +8,18 @@ import useBreedList from "../useBreedList";
 import Navbar from "./Navbar";
 import Paginate from "./Paginate";
 import Results from "./Results";
-const ANIMALS = ["bird", "cat", "dog", "rabbit", "reptile"];
+import { Animal } from "../APIResponsesTypes";
+
+const ANIMALS: Animal[] = ["bird", "cat", "dog", "rabbit", "reptile"];
 
 const SearchParams = () => {
   const [requestParams, setRequestParams] = useState({
-    animal: "",
+    animal: "" as Animal,
     location: "",
     breed: "",
     page: 0,
   });
-  const [animal, setAnimal] = useState("");
+  const [animal, setAnimal] = useState("" as Animal);
   // Equivalent to:
   // const animalHook = useState("");
   // const animal = animalHook[0];
@@ -26,20 +28,20 @@ const SearchParams = () => {
   const [breeds] = useBreedList(animal);
   const [adoptedPet, _] = useContext(AdoptedPetContext); // eslint-disable-line no-unused-vars
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = new FormData(e.target);
+    const formData = new FormData(e.currentTarget);
     const obj = {
-      animal: formData.get("animal") ?? "",
-      location: formData.get("location") ?? "",
-      breed: formData.get("breed") ?? "",
+      animal: (formData.get("animal")?.toString() as Animal) ?? ("" as Animal),
+      location: formData.get("location")?.toString() ?? "",
+      breed: formData.get("breed")?.toString() ?? "",
       page: 0,
     };
     setRequestParams(obj);
   };
 
-  const handleAnimalChange = (e) => {
-    setAnimal(e.target.value);
+  const handleAnimalChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setAnimal(e.target.value as Animal);
   };
 
   const handleNav = (newPage) => {

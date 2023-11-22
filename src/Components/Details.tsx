@@ -7,7 +7,6 @@ import Carousel from "./Carousel";
 import fetchPet from "../Fetches/fetchPet";
 import Modal from "./Modal";
 import Navbar from "./Navbar";
-import { PetAPIResponse } from "../APIResponsesTypes";
 
 const Details = () => {
   const { id } = useParams();
@@ -20,7 +19,7 @@ const Details = () => {
   const navigate = useNavigate();
   const [_, setAdoptedPet] = useContext(AdoptedPetContext); // eslint-disable-line @typescript-eslint/no-unused-vars
 
-  const results = useQuery<PetAPIResponse>(["details", id], fetchPet);
+  const results = useQuery(["details", id], fetchPet);
 
   if (results.isLoading) {
     return (
