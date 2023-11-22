@@ -4,8 +4,8 @@ import AdoptedPetContext from "../AdoptedPetContext";
 import fetchSearch from "../Fetches/fetchSearch";
 
 import useBreedList from "../useBreedList";
-// import Navbar from "./Navbar";
-// import Paginate from "./Paginate";
+import Navbar from "./Navbar";
+import Paginate from "./Paginate";
 import Results from "./Results";
 import { Animal } from "../APIResponsesTypes";
 
@@ -43,18 +43,20 @@ const SearchParams = () => {
     setAnimal(e.target.value as Animal);
   };
 
-  // const handleNav = (newPage) => {
-  //   setRequestParams({ ...requestParams, page: newPage });
-  // };
+  const handleNav = (newPage: number) => {
+    setRequestParams({ ...requestParams, page: newPage });
+  };
 
   const results = useQuery(["search", requestParams], fetchSearch);
   const pets = results?.data?.pets ?? [];
-  // const hasNext = results?.data?.hasNext ?? false;
-  // const pages = Math.ceil(results?.data?.numberOfResults / 10) ?? 1;
+  const hasNext = results?.data?.hasNext ?? false;
+  const pages = results?.data?.numberOfResults
+    ? Math.ceil(results.data.numberOfResults / 10)
+    : 1;
 
   return (
     <div>
-      {/* <Navbar /> */}
+      <Navbar />
       <div className="search-params">
         <form onSubmit={handleFormSubmit}>
           {adoptedPet ? (
@@ -98,12 +100,12 @@ const SearchParams = () => {
           <button>Submit</button>
         </form>
         <Results pets={pets} />
-        {/* <Paginate
+        <Paginate
           page={requestParams.page}
           next={hasNext}
           pages={pages}
           handleNav={handleNav}
-        /> */}
+        />
       </div>
     </div>
   );

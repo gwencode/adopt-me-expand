@@ -1,4 +1,11 @@
-const Paginate = ({ page, next, pages, handleNav }) => {
+type PaginateProps = {
+  page: number;
+  next: boolean;
+  pages: number;
+  handleNav: (page: number) => void;
+};
+
+const Paginate = ({ page, next, pages, handleNav }: PaginateProps) => {
   return (
     <div className="paginate">
       {page > 0 && (

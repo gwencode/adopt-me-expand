@@ -1,6 +1,10 @@
 import { Link } from "react-router-dom";
 
-const Navbar = ({ link1 }) => {
+type NavbarProps = {
+  link1?: string;
+};
+
+const Navbar = ({ link1 }: NavbarProps) => {
   return (
     <nav className="crumbs">
       <ol>

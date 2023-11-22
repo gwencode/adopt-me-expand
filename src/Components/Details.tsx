@@ -6,7 +6,7 @@ import ErrorBoundary from "./ErrorBoundary";
 import Carousel from "./Carousel";
 import fetchPet from "../Fetches/fetchPet";
 import Modal from "./Modal";
-// import Navbar from "./Navbar";
+import Navbar from "./Navbar";
 
 const Details = () => {
   const { id } = useParams();
@@ -37,7 +37,7 @@ const Details = () => {
 
   return (
     <div>
-      {/* <Navbar link1={pet.name} /> */}
+      <Navbar link1={pet.name} />
       <div className="details">
         <Carousel images={pet.images} />
         <div>
