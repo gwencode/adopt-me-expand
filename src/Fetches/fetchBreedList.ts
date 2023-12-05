@@ -6,6 +6,10 @@ const fetchBreedList: QueryFunction<
   ["breeds", Animal]
 > = async ({ queryKey }) => {
   const animal = queryKey[1];
+  if (animal === "") {
+    return Promise.resolve({ animal, breeds: [] });
+  }
+
   const apiRes = await fetch(
     `http://pets-v2.dev-apis.com/breeds?animal=${animal}`
   );

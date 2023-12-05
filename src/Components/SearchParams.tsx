@@ -9,7 +9,7 @@ import Paginate from "./Paginate";
 import Results from "./Results";
 import { Animal } from "../APIResponsesTypes";
 
-const ANIMALS: Animal[] = ["bird", "cat", "dog", "rabbit", "reptile"];
+const ANIMALS: Animal[] = ["", "bird", "cat", "dog", "rabbit", "reptile"];
 
 const SearchParams = () => {
   const [requestParams, setRequestParams] = useState({
@@ -25,6 +25,7 @@ const SearchParams = () => {
   // const setLocation = animalHook[1];
 
   const [breeds] = useBreedList(animal);
+  console.log(breeds);
   const [adoptedPet, _] = useContext(AdoptedPetContext); // eslint-disable-line no-unused-vars
 
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
